@@ -9,18 +9,21 @@ import Header from '../components/Header';
 import {fontFamilies} from '../constants/fonts';
 import SongCard from '../components/SongCard';
 import CardFlexD from '../components/CardFlexD';
+import FloatingPlayer from '../components/FloatingPlayer';
+import Footer from '../components/Footer';
+import {songsWithCategory} from '../../data/songWithCategory';
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Header />
-      <CardFlexD />
-      <CardFlexD />
-
-      {/* <SongCard /> */}
-      {/* <SongCard />
-      <SongCard />
-      <SongCard /> */}
+      <FlatList
+        data={songsWithCategory}
+        renderItem={CardFlexD}
+        contentContainerStyle={{paddingBottom: 400}}
+      />
+      <FloatingPlayer />
+      <Footer />
     </View>
   );
 };

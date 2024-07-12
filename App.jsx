@@ -1,20 +1,24 @@
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from './src/screen/HomeScreen';
+import DrawerNavigator from './src/navigation/DrawerNavigator';
+import TrackPlayer from 'react-native-track-player';
+import {useSetupPlayer} from './hooks/useSetupTrackPlayer';
 
-const Stack = createNativeStackNavigator();
 const App = () => {
+  const onLoad = () => {
+    console.log('trackplayer setupp');
+  };
+  useSetupPlayer({onLoad});
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="HOME_SCREEN" component={HomeScreen}></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        {/* <StackNavigation /> */}
+        {/* 7:04:24 */}
+        <DrawerNavigator />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 
