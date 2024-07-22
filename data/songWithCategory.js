@@ -1,4 +1,4 @@
-import {recommendedSongs} from './songs';
+import {newReleases, popularSongs, recommendedSongs} from './songs';
 
 export const songsWithCategory = [
   {
@@ -9,11 +9,11 @@ export const songsWithCategory = [
   {
     // Database Password=> Sync@List123
     title: 'New Releases',
-    songs: recommendedSongs,
+    songs: newReleases,
   },
   {
     // Database Password=> Sync@List123
     title: 'Popular Songs',
-    songs: recommendedSongs,
+    songs: popularSongs,
   },
 ];

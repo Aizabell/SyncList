@@ -1,16 +1,27 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {colors} from '../constants/colors';
+
 import {fontFamilies} from '../constants/fonts';
 import {fontSize, iconSizes, spacing} from '../constants/dimensions';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation, useTheme} from '@react-navigation/native';
 
 const Footer = () => {
+  const {colors} =useTheme();
+  const navigation = useNavigation();
+
+  const openHome = () => {
+    navigation.navigate('HOME_SCREEN');
+  };
+  const openFavorite = () => {
+    navigation.navigate('LIKE_SCREEN');
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={openHome}>
         <View style={styles.menu}>
           {/* Icons */}
           <AntDesign
@@ -18,17 +29,17 @@ const Footer = () => {
             color={colors.iconPrimary}
             size={iconSizes.lg}
           />
-          <Text style={styles.menuText}>Home</Text>
+          <Text style={[styles.menuText,{color: colors.textPrimary,borderBottomColor: colors.textPrimary,}]}>Home</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={openFavorite}>
         <View style={styles.menu}>
           <MaterialIcons
             name={'favorite-border'}
             color={colors.iconPrimary}
             size={iconSizes.lg}
           />
-          <Text style={styles.menuText}>Favorite</Text>
+          <Text style={[styles.menuText,{color: colors.textPrimary,borderBottomColor: colors.textPrimary,}]}>Favorite</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
@@ -38,7 +49,7 @@ const Footer = () => {
             color={colors.iconPrimary}
             size={iconSizes.lg}
           />
-          <Text style={styles.menuText}>Library</Text>
+          <Text style={[styles.menuText,{color: colors.textPrimary,borderBottomColor: colors.textPrimary,}]}>Library</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
@@ -48,7 +59,7 @@ const Footer = () => {
             color={colors.iconPrimary}
             size={iconSizes.lg}
           />
-          <Text style={styles.menuText}>Settings</Text>
+          <Text style={[styles.menuText,{color: colors.textPrimary,borderBottomColor: colors.textPrimary,}]}>Settings</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -59,7 +70,7 @@ export default Footer;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background,
+    // backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
@@ -70,10 +81,10 @@ const styles = StyleSheet.create({
   menuText: {
     padding: 10,
     marginTop: -5,
-    color: colors.textPrimary,
+    // color: colors.textPrimary,
     fontSize: fontSize.md,
     fontFamily: fontFamilies.bold,
-    borderBottomColor: colors.textPrimary,
+    // borderBottomColor: colors.textPrimary,
     borderBottomWidth: 1,
   },
 

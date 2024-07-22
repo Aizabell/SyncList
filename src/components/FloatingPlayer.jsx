@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {colors} from '../constants/colors';
+// import {colors} from '../constants/colors';
 import {fontSize, iconSizes, spacing} from '../constants/dimensions';
 import {
   GotoNextButton,
@@ -11,19 +11,30 @@ import {fontFamilies} from '../constants/fonts';
 import {useSharedValue} from 'react-native-reanimated';
 import {Slider} from 'react-native-awesome-slider';
 import MovingText from './MovingText';
-import {useNavigation} from '@react-navigation/native';
-import TrackPlayer, {useActiveTrack} from 'react-native-track-player';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import TrackPlayer, {
+  useActiveTrack,
+  useProgress,
+} from 'react-native-track-player';
 
 const imageUrl =
   'https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/685/325x325/feel-like-1716544854-pYxFtraNxA.jpg';
 
 const FloatingPlayer = () => {
+  const {colors} =useTheme();
   const activeTrack = useActiveTrack();
   const navigation = useNavigation();
   const progress = useSharedValue(0);
   const min = useSharedValue(0);
   const max = useSharedValue(1);
   // const {position, duration} = useTrackPlayerProgress();
+  const {duration, position} = useProgress();
+
+  const isSliding = useSharedValue(false);
+
+  if (!isSliding.value) {
+    progress.value = duration > 0 ? position / duration : 0;
+  }
 
   const handleOpenPlayerScreen = () => {
     navigation.navigate('PLAYER_SCREEN');
@@ -52,6 +63,7 @@ const FloatingPlayer = () => {
           containerStyle={{}}
           renderThumb={() => <View />}
           renderBubble={() => <View />}
+          onSlidingStart={() => (isSliding.value = true)}
           onValueChange={async (value) => {
             await TrackPlayer.seekTo(value * duration);
           }}
@@ -86,10 +98,10 @@ const FloatingPlayer = () => {
           <MovingText
             text={activeTrack.title}
             animationThreshold={15}
-            style={styles.title}
+            style={[styles.title,{color: colors.textPrimary,}]}
           />
           {/* <Text style={styles.title}>Feel Like</Text> */}
-          <Text style={styles.subtitle}>{activeTrack.artist}</Text>
+          <Text style={[styles.subtitle,{color: colors.textSecondary,}]}>{activeTrack.artist}</Text>
         </View>
         <View style={styles.playerControlContainer}>
           <GotoPreviousButton size={iconSizes.md} />
@@ -109,7 +121,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 70,
-    backgroundColor: 'grey',
+    // backgroundColor: colors.background,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 0,
@@ -120,12 +132,12 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   title: {
-    color: colors.textPrimary,
+    // color: colors.textPrimary,
     fontSize: fontSize.lg,
     fontFamily: fontFamilies.medium,
   },
   subtitle: {
-    color: colors.textSecondary,
+    // color: colors.textSecondary,
     fontSize: fontSize.md,
     fontFamily: fontFamilies.medium,
   },

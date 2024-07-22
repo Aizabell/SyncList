@@ -3,10 +3,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import React from 'react';
 import {iconSizes} from '../constants/dimensions';
-import {colors} from '../constants/colors';
+// import {colors} from '../constants/colors';
 import TrackPlayer, {useIsPlaying} from 'react-native-track-player';
+import { useTheme } from '@react-navigation/native';
 
 export const GotoPreviousButton = ({size = iconSizes.xl}) => {
+  const {colors} =useTheme();
   const handleGoToPrevious = async () => {
     TrackPlayer.skipToPrevious();
   };
@@ -18,6 +20,7 @@ export const GotoPreviousButton = ({size = iconSizes.xl}) => {
 };
 
 export const PlayPauseButton = ({size = iconSizes.lg}) => {
+  const {colors} =useTheme();
   const {playing} = useIsPlaying();
   const handleTogglePlay = () => {
     if (playing) {
@@ -38,6 +41,7 @@ export const PlayPauseButton = ({size = iconSizes.lg}) => {
 };
 
 export const GotoNextButton = ({size = iconSizes.xl}) => {
+  const {colors} =useTheme();
   const handleGoToNext = async () => {
     TrackPlayer.skipToNext();
   };

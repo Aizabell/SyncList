@@ -1,6 +1,6 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {colors} from '../constants/colors';
+
 
 //icons
 
@@ -12,14 +12,16 @@ import CardFlexD from '../components/CardFlexD';
 import FloatingPlayer from '../components/FloatingPlayer';
 import Footer from '../components/Footer';
 import {songsWithCategory} from '../../data/songWithCategory';
+import { useTheme } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const {colors} =useTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:colors.background}]}>
       <Header />
       <FlatList
         data={songsWithCategory}
-        renderItem={CardFlexD}
+        renderItem={({item}) => <CardFlexD item={item}/>}
         contentContainerStyle={{paddingBottom: 400}}
       />
       <FloatingPlayer />
@@ -32,7 +34,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background,
+    
     flex: 1,
   },
 });

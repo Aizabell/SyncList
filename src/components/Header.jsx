@@ -2,13 +2,14 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {colors} from '../constants/colors';
+
 import {fontSize, iconSizes, spacing} from '../constants/dimensions';
 import {logos} from '../constants/logos';
 import {fontFamilies} from '../constants/fonts';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 
 const Header = () => {
+  const {colors} =useTheme();
   const navigation = useNavigation();
   const toggleDrawer = () => {
     navigation.toggleDrawer();
@@ -27,7 +28,7 @@ const Header = () => {
           source={require('../../assets/logos/SyncListLogo.png')}
           style={styles.logoImage}
         />
-        <Text style={styles.title}>SYNCLIST</Text>
+        <Text style={[styles.title,{color: colors.textPrimary}]}>SYNCLIST</Text>
       </View>
 
       <TouchableOpacity style={styles.icon}>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     marginRight: -8,
   },
   title: {
-    color: colors.textPrimary,
+    // color: colors.textPrimary,
     fontFamily: fontFamilies.bold,
     fontSize: fontSize.xl,
     paddingTop: spacing.sm,

@@ -1,17 +1,19 @@
-import {FlatList, StyleSheet, Text, View} from "react-native";
-import React from "react";
-import {fontSize, spacing} from "../constants/dimensions";
-import SongCard from "./SongCard";
-import {colors} from "../constants/colors";
-import {fontFamilies} from "../constants/fonts";
-import TrackPlayer from "react-native-track-player";
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {fontSize, spacing} from '../constants/dimensions';
+import SongCard from './SongCard';
+
+import {fontFamilies} from '../constants/fonts';
+import TrackPlayer from 'react-native-track-player';
+import {useTheme} from '@react-navigation/native';
 
 const CardFlexD = ({item}) => {
-  const handlePlayTrack = async (selectedTrack) => {
+  const {colors} = useTheme();
+  const handlePlayTrack = async (selectedTrack, songs = item.songs) => {
     // console.log("selectedTrack: ", selectedTrack);
-    const songs = item.songs; //array of songs
+    // const songs = item.songs; //array of songs
     const trackIndex = songs.findIndex(
-      (track) => track.url === selectedTrack.url,
+      track => track.url === selectedTrack.url,
     );
     if (trackIndex === -1) {
       return;
@@ -26,14 +28,16 @@ const CardFlexD = ({item}) => {
     await TrackPlayer.play();
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.headingText}>{item.title}</Text>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
+      <Text style={[styles.headingText, {color: colors.textPrimary}]}>
+        {item.title}
+      </Text>
       <FlatList
         data={item.songs}
         renderItem={({item}) => (
           <SongCard
             item={item}
-            handlePlay={(selectedTrack) => {
+            handlePlay={selectedTrack => {
               handlePlayTrack(selectedTrack);
             }}
           />
@@ -43,6 +47,7 @@ const CardFlexD = ({item}) => {
         contentContainerStyle={{
           paddingHorizontal: spacing.lg,
         }}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );
@@ -53,14 +58,14 @@ export default CardFlexD;
 const styles = StyleSheet.create({
   headingText: {
     fontSize: fontSize.xl,
-    color: colors.textPrimary,
+    // color: colors.textPrimary,
     fontFamily: fontFamilies.bold,
     marginVertical: spacing.lg,
     paddingHorizontal: spacing.lg,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    // backgroundColor: colors.background,
     paddingHorizontal: spacing.lg,
   },
 });

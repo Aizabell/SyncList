@@ -6,8 +6,8 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
-import {colors} from '../constants/colors';
+import React, {useEffect, useState} from 'react';
+// import {colors} from '../constants/colors';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,13 +22,26 @@ import {
   PlayPauseButton,
 } from '../components/PlayerControls';
 import TrackPlayer, {useActiveTrack} from 'react-native-track-player';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import useLikeSongs from '../store/likeStore';
+import {isExist} from '../utils';
 
 const PlayerScreen = () => {
+  const {colors} =useTheme();
+  const {likedSongs, addToLiked} = useLikeSongs();
   const navigation = useNavigation();
   const activeTrack = useActiveTrack();
   const isLiked = false;
   const [isMute, setIsMute] = useState(false);
+
+  useEffect(() => {
+    setVolume();
+  }, []);
+
+  const setVolume = async () => {
+    const volume = await TrackPlayer.getVolume();
+    setIsMute(volume === 0 ? true : false);
+  };
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -54,7 +67,7 @@ const PlayerScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+  <View style={[styles.container,{backgroundColor: colors.background,}]}>
       {/* header */}
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={handleGoBack}>
@@ -64,7 +77,7 @@ const PlayerScreen = () => {
             size={iconSizes.md}
           />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Playing Now</Text>
+        <Text style={[styles.headerText,{color: colors.textPrimary,}]}>Playing Now</Text>
       </View>
       {/* image */}
       <View style={styles.coverImageContainer}>
@@ -73,13 +86,13 @@ const PlayerScreen = () => {
       {/* title */}
       <View style={styles.titleMainContainer}>
         <View style={styles.titleInfoContainer}>
-          <Text style={styles.title}>{activeTrack.title}</Text>
-          <Text style={styles.artist}>{activeTrack.artist}</Text>
+          <Text style={[styles.title,{color: colors.textPrimary,}]}>{activeTrack.title}</Text>
+          <Text style={[styles.artist,{color: colors.textSecondary,}]}>{activeTrack.artist}</Text>
         </View>
         {/* icon */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => addToLiked(activeTrack)}>
           <AntDesign
-            name={isLiked ? 'heart' : 'hearto'}
+            name={isExist(likedSongs,activeTrack) ? 'heart' : 'hearto'}
             color={colors.iconSecondary}
             size={iconSizes.md}
           />
@@ -121,7 +134,7 @@ export default PlayerScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    // backgroundColor: colors.background,
     padding: spacing.lg,
   },
   headerContainer: {
@@ -131,7 +144,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     flex: 1,
-    color: colors.textPrimary,
+    // color: colors.textPrimary,
     textAlign: 'center',
     fontSize: fontSize.lg,
     fontFamily: fontFamilies.medium,
@@ -148,12 +161,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fontSize.xl,
-    color: colors.textPrimary,
+    // color: colors.textPrimary,
     fontFamily: fontFamilies.medium,
   },
   artist: {
     fontSize: fontSize.lg,
-    color: colors.textSecondary,
+    // color: colors.textSecondary,
     fontFamily: fontFamilies.medium,
   },
   titleMainContainer: {
